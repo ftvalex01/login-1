@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Navbar from "./components/Navbar";
 
 
 
@@ -10,7 +11,7 @@ function App() {
   return (
     <Router>
       <div className="container">
-        navbar...
+        <Navbar/>
         <Switch>
           <Route path="/login">login...</Route>
           <Route path="/admin">admin...</Route>
