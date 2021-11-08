@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom'
 
 const Login = (props) => {
 
-    const[email,setEmail] = React.useState('prueba@prueba.com')
-    const[password,setPassword] = React.useState('123456')
+    const[email,setEmail] = React.useState('')
+    const[password,setPassword] = React.useState('')
     const[error,setError] = React.useState(null)
     const[esRegistro,setEsRegistro] = React.useState(true)
 
@@ -138,6 +138,14 @@ const Login = (props) => {
                               esRegistro ? '¿ya tienes cuenta?' : '¿no tienes cuenta?'
                           }
                         </button>
+                            {
+                                !esRegistro ? (
+                                    <button className="btn btn-info btn-sm btn-block mx-2" type="button" onClick={()=>props.history.push('/reset')}> 
+                                    recuperar contraseña
+                                    </button>
+                                ) : null
+                            }
+                       
                     </form>
                 </div>
             </div>  

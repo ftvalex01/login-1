@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Admin from "./components/Admin";
 import {auth} from "./firebase";
+import Reset from "./components/Reset";
 
 
 
@@ -32,6 +33,7 @@ function App() {
         <Switch>
           <Route path="/login"><Login/></Route>
           <Route path="/admin"><Admin/></Route>
+          <Route path="/reset"><Reset/></Route>
           <Route path="/">Inicio</Route>
         </Switch>
       </div>
