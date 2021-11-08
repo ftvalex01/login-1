@@ -1,8 +1,9 @@
 import React from 'react'
 import {auth,db} from '../firebase'
+import { withRouter } from 'react-router-dom'
 
 
-const Login = () => {
+const Login = (props) => {
 
     const[email,setEmail] = React.useState('')
     const[password,setPassword] = React.useState('')
@@ -43,6 +44,7 @@ const Login = () => {
            setEmail('')
            setPassword('')
            setError(null)
+           props.history.push('/admin')
         } catch (error) {
             if(error.code === "auth/invalid-email"){
                 setError('email no valido')
@@ -54,7 +56,7 @@ const Login = () => {
                 setError('contraseña erronea')
             }
         }
-    },[email,password])
+    },[email,password,props.history])
 
 
 
@@ -69,6 +71,7 @@ const Login = () => {
            setEmail('')
            setPassword('')
            setError(null)
+           props.history.push('/admin')
         } catch (error) {
             if(error.code === "auth/invalid-email"){
                 setError('Email no valido')
@@ -77,7 +80,7 @@ const Login = () => {
                 setError('Email ya utilizado')
             }
         }
-    },[email,password])   
+    },[email,password,props.history])   
     
     
 
@@ -138,4 +141,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default  withRouter(Login)
