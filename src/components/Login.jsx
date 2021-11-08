@@ -1,5 +1,6 @@
 import React from 'react'
-import {auth} from '../firebase'
+import {auth,db} from '../firebase'
+
 
 const Login = () => {
 
@@ -9,11 +10,65 @@ const Login = () => {
     const[esRegistro,setEsRegistro] = React.useState(true)
 
 
+    const procesarDatos = (e) =>{
+        e.preventDefault()
+        if(!email.trim()){
+            setError('Ingrese email')
+            return
+        }
+        if(!password.trim()){
+         setError('Ingrese password')
+         return
+     }
+         if(password.length < 6){ //en firebase la contraseña tiene que tener minimo 6 caracteres.
+          setError('La contraseña tiene que tener minimo 6 caracteres')
+          return
+         }
+ 
+         setError(null)//para quitar el mensaje de error
+         console.log('Pasando todas las validaciones')
+ 
+         if(esRegistro){
+             registrar()
+         }else{
+             login()
+         }
+    }
+
+
+    const login = React.useCallback(async()=>{
+        try {
+           const res = await auth.signInWithEmailAndPassword(email,password)
+           console.log(res.user)
+           setEmail('')
+           setPassword('')
+           setError(null)
+        } catch (error) {
+            if(error.code === "auth/invalid-email"){
+                setError('email no valido')
+            }
+            if(error.code === "auth/user-not-found"){
+                setError('Email no registrado')
+            }
+            if(error.code === "auth/wrong-password"){
+                setError('contraseña erronea')
+            }
+        }
+    },[email,password])
+
+
 
     const registrar = React.useCallback(async()=>{
         try {
            const res = await auth.createUserWithEmailAndPassword(email,password)
+           await db.collection('usuarios').doc(res.user.email).set({
+                email: res.user.email,
+                uid: res.user.uid
+           })
            console.log(res.user)
+           setEmail('')
+           setPassword('')
+           setError(null)
         } catch (error) {
             if(error.code === "auth/invalid-email"){
                 setError('Email no valido')
@@ -22,32 +77,14 @@ const Login = () => {
                 setError('Email ya utilizado')
             }
         }
-    },[email,password])    
+    },[email,password])   
+    
+    
 
 
-   const procesarDatos = (e) =>{
-       e.preventDefault()
-       if(!email.trim()){
-           setError('Ingrese email')
-           return
-       }
-       if(!password.trim()){
-        setError('Ingrese password')
-        return
-    }
-        if(password.length < 6){ //en firebase la contraseña tiene que tener minimo 6 caracteres.
-         setError('La contraseña tiene que tener minimo 6 caracteres')
-         return
-        }
 
-        setError(null)//para quitar el mensaje de error
-        console.log('Pasando todas las validaciones')
-
-        if(setEsRegistro){
-            registrar()
-        }
-   }
-
+ 
+    
 
 
 
