@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom'
 
 const Login = (props) => {
 
-    const[email,setEmail] = React.useState('')
-    const[password,setPassword] = React.useState('')
+    const[email,setEmail] = React.useState('prueba@prueba.com')
+    const[password,setPassword] = React.useState('123456')
     const[error,setError] = React.useState(null)
     const[esRegistro,setEsRegistro] = React.useState(true)
 
@@ -66,6 +66,10 @@ const Login = (props) => {
            await db.collection('usuarios').doc(res.user.email).set({
                 email: res.user.email,
                 uid: res.user.uid
+           })
+           await db.collection(res.user.uid).add({
+               name:'tarea de ejemplo',
+               fecha: Date.now()
            })
            console.log(res.user)
            setEmail('')
